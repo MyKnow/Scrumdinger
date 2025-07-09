@@ -13,9 +13,12 @@ struct DetailView: View {
     var body: some View {
         List {
             Section(header: Text("회의 정보"))  {
-                Label("회의 시작", systemImage: "timer")
-                    .font(.headline)
-                    .foregroundColor(.accentColor)
+                NavigationLink(destination: MeetingView()) {
+                    Label("회의 시작", systemImage: "timer")
+                        .font(.headline)
+                        .foregroundColor(.accentColor)
+                }
+                .navigationTitle(scrum.title)
                 HStack {
                     Label("회의 시간", systemImage: "clock")
                     Spacer()
@@ -25,7 +28,7 @@ struct DetailView: View {
                 HStack {
                     Label("테마", systemImage: "paintpalette")
                     Spacer()
-                    Text(scrum.theme.name)
+                    Text(scrum.theme.localizedName)
                         .padding(4)
                         .foregroundColor(scrum.theme.accentColor)
                         .background(scrum.theme.mainColor)
