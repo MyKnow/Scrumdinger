@@ -19,8 +19,10 @@ struct DetailEditView: View {
                     Slider(value: $scrum.lengthInMinutesAsDouble, in: 5.0...30.0, step: 1.0) {
                         Text("시간")
                     }
+                    .accessibilityValue("\(scrum.lengthInMinutes)분")
                     Spacer()
                     Text("\(scrum.lengthInMinutes)분")
+                        .accessibilityHidden(true)
                 }
             }
             Section(header: Text("참가자")) {
@@ -31,13 +33,14 @@ struct DetailEditView: View {
                     scrum.attendees.remove(atOffsets: indices)
                 }
                 HStack {
-                    TextField("새 참가자 추가", text: $attendeeName)
+                    TextField("추가할 참가자 이름", text: $attendeeName)
                     Button(action: {
                         let attendee = DailyScrum.Attendee(name: attendeeName)
                         scrum.attendees.append(attendee)
                         attendeeName = ""
                     }) {
                         Image(systemName: "plus")
+                            .accessibilityValue("새 참가자 추가")
                     }
                     .disabled(attendeeName.isEmpty)
                 }
