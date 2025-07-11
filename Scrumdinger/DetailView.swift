@@ -10,6 +10,9 @@ import ThemeKit
 
 struct DetailView: View {
     let scrum: DailyScrum
+    
+    @State private var isPresentingEditView = false
+    
     var body: some View {
         List {
             Section(header: Text("회의 정보"))  {
@@ -39,6 +42,32 @@ struct DetailView: View {
                 ForEach(scrum.attendees) { attendee in
                     Label(attendee.name, systemImage: "person")
                 }
+            }
+        }
+        .navigationTitle(scrum.title)
+        .toolbar {
+            Button("수정") {
+                isPresentingEditView = true
+            }
+        }
+        .sheet(isPresented: $isPresentingEditView) {
+            NavigationStack {
+                DetailEditView()
+                    .navigationTitle(scrum.title)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("취소") {
+                                isPresentingEditView = false
+                            }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("저장") {
+                                isPresentingEditView = false
+                            }
+                        }
+                    }
+                    .presentationDetents([.large, .medium])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
