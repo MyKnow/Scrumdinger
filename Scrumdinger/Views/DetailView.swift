@@ -54,23 +54,12 @@ struct DetailView: View {
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                DetailEditView(scrum: $editingScurm)
-                    .navigationTitle(scrum.title)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("취소") {
-                                isPresentingEditView = false
-                            }
-                        }
-                        ToolbarItem(placement: .confirmationAction) {
-                            Button("저장") {
-                                isPresentingEditView = false
-                                scrum = editingScurm
-                            }
-                        }
-                    }
-                    .presentationDetents([.large, .medium])
-                    .presentationDragIndicator(.visible)
+                DetailEditView(scrum: $editingScurm, saveEdits: { _ in
+                    scrum = editingScurm
+                })
+                .navigationTitle(scrum.title)
+                .presentationDetents([.large, .medium])
+                .presentationDragIndicator(.visible)
             }
         }
     }
