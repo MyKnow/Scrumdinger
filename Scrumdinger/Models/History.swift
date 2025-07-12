@@ -14,8 +14,10 @@ class History: Identifiable {
     var date: Date = Date()
     var attendees: [Attendee]
     var dailyScrum: DailyScrum?
+    var transcript: String?
     
-    init(attendees: [Attendee]) {
+    init(attendees: [Attendee], transcript: String? = nil) {
         self.attendees = attendees
+        self.transcript = transcript
     }
 }

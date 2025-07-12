@@ -10,6 +10,9 @@
 		6D8D7EBE2E1E7147007E32CF /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6D8D7EBD2E1E7147007E32CF /* ThemeKit */; };
 		6DF219A82E21F367004E613E /* TimerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF219A72E21F367004E613E /* TimerKit */; };
 		6DF219B12E22041D004E613E /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF219B02E22041D004E613E /* ThemeKit */; };
+		6DF219C22E225295004E613E /* ThemeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF219C12E225295004E613E /* ThemeKit */; };
+		6DF219C52E2252A7004E613E /* TimerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF219C42E2252A7004E613E /* TimerKit */; };
+		6DF219C82E2252B5004E613E /* TranscriptionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6DF219C72E2252B5004E613E /* TranscriptionKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,9 +32,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DF219C52E2252A7004E613E /* TimerKit in Frameworks */,
 				6D8D7EBE2E1E7147007E32CF /* ThemeKit in Frameworks */,
+				6DF219C82E2252B5004E613E /* TranscriptionKit in Frameworks */,
 				6DF219A82E21F367004E613E /* TimerKit in Frameworks */,
 				6DF219B12E22041D004E613E /* ThemeKit in Frameworks */,
+				6DF219C22E225295004E613E /* ThemeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +83,9 @@
 				6D8D7EBD2E1E7147007E32CF /* ThemeKit */,
 				6DF219A72E21F367004E613E /* TimerKit */,
 				6DF219B02E22041D004E613E /* ThemeKit */,
+				6DF219C12E225295004E613E /* ThemeKit */,
+				6DF219C42E2252A7004E613E /* TimerKit */,
+				6DF219C72E2252B5004E613E /* TranscriptionKit */,
 			);
 			productName = Scrumdinger;
 			productReference = 6DBFB5A32E1E5C770032FDC6 /* Scrumdinger.app */;
@@ -107,8 +116,9 @@
 			mainGroup = 6DBFB59A2E1E5C770032FDC6;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6DF219A62E21F367004E613E /* XCLocalSwiftPackageReference "../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/TimerKit" */,
-				6DF219AF2E22041D004E613E /* XCLocalSwiftPackageReference "../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/ThemeKit" */,
+				6DF219C02E225295004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/ThemeKit" */,
+				6DF219C32E2252A7004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TimerKit" */,
+				6DF219C62E2252B5004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TranscriptionKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6DBFB5A42E1E5C770032FDC6 /* Products */;
@@ -270,6 +280,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "회의에서 음성을 녹음하기 위해 해당 권한이 필요합니다. 녹음은 받아쓰기가 끝나면 종료됩니다.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "회의에서 사용자의 음성 인식을 위해 해당 권한이 필요합니다";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -314,6 +326,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "회의에서 음성을 녹음하기 위해 해당 권한이 필요합니다. 녹음은 받아쓰기가 끝나면 종료됩니다.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "회의에서 사용자의 음성 인식을 위해 해당 권한이 필요합니다";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -369,13 +383,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		6DF219A62E21F367004E613E /* XCLocalSwiftPackageReference "../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/TimerKit" */ = {
+		6DF219C02E225295004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/ThemeKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/TimerKit;
+			relativePath = ../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/ThemeKit;
 		};
-		6DF219AF2E22041D004E613E /* XCLocalSwiftPackageReference "../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/ThemeKit" */ = {
+		6DF219C32E2252A7004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TimerKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../Downloads/ManagingStateAndLifeCycle/StartingProject/TutorialResources/ThemeKit;
+			relativePath = ../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TimerKit;
+		};
+		6DF219C62E2252B5004E613E /* XCLocalSwiftPackageReference "../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TranscriptionKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../Downloads/TranscribingSpeechToText/StartingProject/TutorialResources/TranscriptionKit;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -391,6 +409,18 @@
 		6DF219B02E22041D004E613E /* ThemeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ThemeKit;
+		};
+		6DF219C12E225295004E613E /* ThemeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ThemeKit;
+		};
+		6DF219C42E2252A7004E613E /* TimerKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TimerKit;
+		};
+		6DF219C72E2252B5004E613E /* TranscriptionKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TranscriptionKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
