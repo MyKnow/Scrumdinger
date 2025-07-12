@@ -17,28 +17,29 @@ struct DetailEditView: View {
     @State private var lengthInMinutesAsDouble: Double
     @State private var attendees: [Attendee]
     @State private var theme: Theme
+    @State private var errorWrapper: ErrorWrapper?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
     private let isCreatingScrum: Bool
     
     init(scrum: DailyScrum?) {
-            let scrumToEdit: DailyScrum
-            if let scrum {
-                scrumToEdit = scrum
-                isCreatingScrum = false
-            } else {
-                scrumToEdit = DailyScrum(title: "", attendees: [], lengthInMinutes: 5, theme: .sky)
-                isCreatingScrum = true
-            }
-
-
-            self.scrum = scrumToEdit
-            self.title = scrumToEdit.title
-            self.lengthInMinutesAsDouble = scrumToEdit.lengthInMinutesAsDouble
-            self.attendees = scrumToEdit.attendees
-            self.theme = scrumToEdit.theme
+        let scrumToEdit: DailyScrum
+        if let scrum {
+            scrumToEdit = scrum
+            isCreatingScrum = false
+        } else {
+            scrumToEdit = DailyScrum(title: "", attendees: [], lengthInMinutes: 5, theme: .sky)
+            isCreatingScrum = true
         }
+
+
+        self.scrum = scrumToEdit
+        self.title = scrumToEdit.title
+        self.lengthInMinutesAsDouble = scrumToEdit.lengthInMinutesAsDouble
+        self.attendees = scrumToEdit.attendees
+        self.theme = scrumToEdit.theme
+    }
     
     var body: some View {
         Form {
@@ -84,14 +85,23 @@ struct DetailEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("완료") {
-                    saveEdits()
-                    dismiss()
+                    do {
+                        try saveEdits()
+                        dismiss()
+                    } catch {
+                        errorWrapper = ErrorWrapper(error: error, guidance: "일일 회의가 기록되지 않았습니다. 다시 시도해주세요.")
+                    }
                 }
             }
         }
+        .sheet(item: $errorWrapper) {
+            dismiss()
+        } content: { wrapper in
+            ErrorView(errorWrapper: wrapper)
+        }
     }
     
-    private func saveEdits() {
+    private func saveEdits() throws {
             scrum.title = title
             scrum.lengthInMinutesAsDouble = lengthInMinutesAsDouble
             scrum.attendees = attendees
@@ -101,7 +111,7 @@ struct DetailEditView: View {
                 context.insert(scrum)
             }
 
-            try? context.save()
+            try context.save()
         }
 }
 

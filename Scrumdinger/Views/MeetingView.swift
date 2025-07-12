@@ -15,6 +15,7 @@ struct MeetingView: View {
     @Environment(\.modelContext) private var context
     let scrum: DailyScrum
     @State var scrumTimer = ScrumTimer()
+    @Binding var errorWrapper: ErrorWrapper?
     
     private let player = AVPlayer.dingPlayer()
     
@@ -36,7 +37,13 @@ struct MeetingView: View {
         .padding()
         .foregroundStyle(scrum.theme.accentColor)
         .onAppear { startScrum() }
-        .onDisappear { endScrum() }
+        .onDisappear {
+            do {
+                try endScrum()
+            } catch {
+                errorWrapper = ErrorWrapper(error: error, guidance: "회의 시간이 기록되지 않았습니다. 다시 시도해주세요.")
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -52,14 +59,14 @@ struct MeetingView: View {
         scrumTimer.startScrum()
     }
     
-    private func endScrum() {
+    private func endScrum() throws {
         scrumTimer.stopScrum()
         scrum.history.insert(History(attendees: scrum.attendees), at: 0)
-        try? context.save()
+        try context.save()
     }
 }
 
 #Preview {
     let scrum = DailyScrum.sampleData[0]
-    MeetingView(scrum: scrum)
+    MeetingView(scrum: scrum, errorWrapper: .constant(nil))
 }
