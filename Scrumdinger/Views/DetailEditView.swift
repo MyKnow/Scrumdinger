@@ -6,41 +6,67 @@
 //
 
 import SwiftUI
+import ThemeKit
+import SwiftData
 
 struct DetailEditView: View {
-    @Binding var scrum: DailyScrum
-    let saveEdits: (DailyScrum) -> Void
+    let scrum: DailyScrum
     
     @State private var attendeeName = ""
+    @State private var title: String
+    @State private var lengthInMinutesAsDouble: Double
+    @State private var attendees: [Attendee]
+    @State private var theme: Theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
+    
+    private let isCreatingScrum: Bool
+    
+    init(scrum: DailyScrum?) {
+            let scrumToEdit: DailyScrum
+            if let scrum {
+                scrumToEdit = scrum
+                isCreatingScrum = false
+            } else {
+                scrumToEdit = DailyScrum(title: "", attendees: [], lengthInMinutes: 5, theme: .sky)
+                isCreatingScrum = true
+            }
+
+
+            self.scrum = scrumToEdit
+            self.title = scrumToEdit.title
+            self.lengthInMinutesAsDouble = scrumToEdit.lengthInMinutesAsDouble
+            self.attendees = scrumToEdit.attendees
+            self.theme = scrumToEdit.theme
+        }
     
     var body: some View {
         Form {
             Section(header: Text("회의 정보")) {
-                TextField("제목", text: $scrum.title)
+                TextField("제목", text: $title)
                 HStack {
-                    Slider(value: $scrum.lengthInMinutesAsDouble, in: 5.0...30.0, step: 1.0) {
+                    Slider(value: $lengthInMinutesAsDouble, in: 5.0...30.0, step: 1.0) {
                         Text("시간")
                     }
-                    .accessibilityValue("\(scrum.lengthInMinutes)분")
+                    .accessibilityValue("\(String(format: "%.0f", lengthInMinutesAsDouble))분")
                     Spacer()
-                    Text("\(scrum.lengthInMinutes)분")
+                    Text("\(String(format: "%.0f", lengthInMinutesAsDouble))분")
                         .accessibilityHidden(true)
                 }
-                ThemePicker(selection: $scrum.theme)
+                ThemePicker(selection: $theme)
             }
             Section(header: Text("참가자")) {
-                ForEach(scrum.attendees) { attendee in
+                ForEach(attendees) { attendee in
                     Text(attendee.name)
                 }
                 .onDelete { indices in
-                    scrum.attendees.remove(atOffsets: indices)
+                    attendees.remove(atOffsets: indices)
                 }
                 HStack {
                     TextField("추가할 참가자 이름", text: $attendeeName)
                     Button(action: {
-                        let attendee = DailyScrum.Attendee(name: attendeeName)
-                        scrum.attendees.append(attendee)
+                        let attendee = Attendee(name: attendeeName)
+                        attendees.append(attendee)
                         attendeeName = ""
                     }) {
                         Image(systemName: "plus")
@@ -58,15 +84,28 @@ struct DetailEditView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("완료") {
-                    saveEdits(scrum)
+                    saveEdits()
                     dismiss()
                 }
             }
         }
     }
+    
+    private func saveEdits() {
+            scrum.title = title
+            scrum.lengthInMinutesAsDouble = lengthInMinutesAsDouble
+            scrum.attendees = attendees
+            scrum.theme = theme
+
+            if isCreatingScrum {
+                context.insert(scrum)
+            }
+
+            try? context.save()
+        }
 }
 
-#Preview {
-    @Previewable @State var scrum = DailyScrum.sampleData[0]
-    DetailEditView(scrum: $scrum, saveEdits: {_ in })
+#Preview(traits: .dailyScrumSampleData) {
+    @Previewable @Query(sort: \DailyScrum.title) var scrums: [DailyScrum]
+    DetailEditView(scrum: scrums[0])
 }

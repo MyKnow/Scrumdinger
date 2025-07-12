@@ -7,17 +7,17 @@
 
 import SwiftUI
 import ThemeKit
+import SwiftData
 
 struct DetailView: View {
-    @Binding var scrum: DailyScrum
+    let scrum: DailyScrum
     
-    @State private var editingScurm = DailyScrum.emptyScrum
     @State private var isPresentingEditView = false
     
     var body: some View {
         List {
             Section(header: Text("회의 정보"))  {
-                NavigationLink(destination: MeetingView(scrum: $scrum)) {
+                NavigationLink(destination: MeetingView(scrum: scrum)) {
                     Label("회의 시작", systemImage: "timer")
                         .font(.headline)
                         .foregroundColor(.accentColor)
@@ -59,16 +59,13 @@ struct DetailView: View {
         .navigationTitle(scrum.title)
         .toolbar {
             Button("수정") {
-                editingScurm = scrum
                 isPresentingEditView = true
             }
         }
         .sheet(isPresented: $isPresentingEditView) {
             NavigationStack {
-                DetailEditView(scrum: $editingScurm, saveEdits: { _ in
-                    scrum = editingScurm
-                })
-                .navigationTitle(scrum.title)
+                DetailEditView(scrum: scrum)
+                    .navigationTitle(scrum.title)
                 .presentationDetents([.large, .medium])
                 .presentationDragIndicator(.visible)
             }
@@ -76,10 +73,9 @@ struct DetailView: View {
     }
 }
 
-#Preview {
-    @Previewable @State var scrum = DailyScrum.sampleData[0]
-    
+#Preview(traits: .dailyScrumSampleData) {
+    @Previewable @Query(sort: \DailyScrum.title) var scrums: [DailyScrum]
     NavigationStack {
-        DetailView(scrum: $scrum)
+        DetailView(scrum: scrums[0])
     }
 }
